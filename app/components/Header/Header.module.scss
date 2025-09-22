@@ -1,0 +1,44 @@
+.header {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 78px;
+	color: black;
+	background: #fff;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.nav {
+	display: flex;
+	justify-content: end;
+	padding: 0 16px;
+}
+
+.link {
+	display: flex;
+	gap: 10px;
+	height: 41px;
+	padding: 6px 12px;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	border-radius: 3px;
+	font-size: 14px;
+	background-color: rgba(0, 0, 0, 0.03);
+	transition: opacity 0.3s;
+
+	&:hover {
+		opacity: 0.75;
+	}
+
+}
+
+.link-wrapper {
+	margin-left: 12px;
+}
+
+.active {
+	background-color: var(--button-primary);
+	color: white;
+
+}
