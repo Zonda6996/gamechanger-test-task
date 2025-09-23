@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import './globals.scss' // глобальные стили
+import './globals.scss'
 import { inter } from './ui/fonts'
-import Header from './components/Header/Header'
+import HeaderWrapper from './components/Header/HeaderWrapper'
 
 export const metadata: Metadata = {
 	title: 'Test Task',
@@ -16,7 +16,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={inter.className}>
-					<Header />
+				<HeaderWrapper />
 				<div className='app-wrapper'>
 					<main className='page-content'>{children}</main>
 				</div>

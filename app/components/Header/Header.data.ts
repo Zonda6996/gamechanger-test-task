@@ -1,4 +1,4 @@
-import { ROUTES } from '@/app/lib/routes/routes'
+import { ROUTES } from '@/app/lib/routes'
 import dashboardIcon from '@/app/assets/icons/dashboardIcon.svg'
 import profileIcon from '@/app/assets/icons/profileIcon.svg'
 import ordersIcon from '@/app/assets/icons/ordersIcon.svg'
