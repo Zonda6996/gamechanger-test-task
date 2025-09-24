@@ -9,6 +9,8 @@ db.exec(`
     login TEXT UNIQUE,
     email TEXT UNIQUE,
     password TEXT
+	 phone TEXT,
+	 address TEXT
   )
 `)
 
