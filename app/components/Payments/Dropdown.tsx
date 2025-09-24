@@ -54,9 +54,11 @@ export default function Dropdown() {
 					},
 				}}
 			>
-				<MenuItem onClick={handleClose}>Profile</MenuItem>
-				<MenuItem onClick={handleClose}>My account</MenuItem>
-				<MenuItem onClick={handleClose}>Logout</MenuItem>
+				<MenuItem onClick={handleClose}>Сортировать по названию</MenuItem>
+				<MenuItem onClick={handleClose}>Сортировать по статусу</MenuItem>
+				<MenuItem onClick={handleClose}>Сортировать по выполнению</MenuItem>
+				<MenuItem onClick={handleClose}>Сортировать по действию</MenuItem>
+				<MenuItem onClick={handleClose}>Сортировать по диапазону</MenuItem>
 			</Menu>
 		</div>
 	)

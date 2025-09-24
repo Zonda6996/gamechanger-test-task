@@ -10,68 +10,124 @@ import styles from './Register.module.scss'
 import { Button } from '@mui/material'
 import Link from 'next/link'
 import { ROUTES } from '@/app/lib/routes'
+import { useRouter } from 'next/navigation'
 
 type RegisterForm = z.infer<typeof registerSchema>
 
 export default function RegisterPage() {
+	const router = useRouter()
+	
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isValid },
+		setError,
 	} = useForm<RegisterForm>({
 		resolver: zodResolver(registerSchema),
 		mode: 'onChange',
 	})
 
+	
 	const onSubmit = async (data: RegisterForm) => {
-		console.log('Отправляем на сервер:', data)
+		try {
+			const res = await fetch('/api/register', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			})
+
+			const result = await res.json()
+
+			if (res.ok) {
+				router.push(ROUTES.HOME)
+			} else {
+				console.error(result.error || 'Ошибка регистрации')
+				setError('email', { type: 'manual', message: result.error })
+			}
+
+			console.log(result.message)
+		} catch (err) {
+			console.error('Ошибка при запросе:', err)
+		}
 	}
 
 	return (
 		<div className={styles['auth-container']}>
-			<div>
-				<h3>Логотоип</h3>
-				<h4>Регистрация</h4>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<div>
-						<label>Логин</label>
-						<input placeholder='Логин' {...register('login')} />
-						{errors.login && <p>{errors.login.message}</p>}
+			<div className={styles['auth-wrapper']}>
+				<div className={styles['form-wrapper']}>
+					<h3 className={styles.logo}>Логотоип</h3>
+					<h4 className={styles.title}>Регистрация</h4>
+					<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+						<div className={styles['input-wrapper']}>
+							<label>Логин</label>
+							<input placeholder='Логин' {...register('login')} />
+							{errors.login && (
+								<p className={styles['error-message']}>
+									{errors.login.message}
+								</p>
+							)}
+						</div>
+						<div className={styles['input-wrapper']}>
+							<label>Mail</label>
+							<input placeholder='Email' {...register('email')} />
+							{errors.email && (
+								<p className={styles['error-message']}>
+									{errors.email.message}
+								</p>
+							)}
+						</div>
+						<div className={styles['input-wrapper']}>
+							<label>Пароль</label>
+							<input placeholder='Пароль' {...register('password')} />
+							{errors.password && (
+								<p className={styles['error-message']}>
+									{errors.password.message}
+								</p>
+							)}
+						</div>
+						<div className={styles['input-wrapper']}>
+							<label>Подтвердите пароль</label>
+							<input
+								placeholder='Повторите пароль'
+								{...register('confirmPassword')}
+							/>
+							{errors.confirmPassword && (
+								<p className={styles['error-message']}>
+									{errors.confirmPassword.message}
+								</p>
+							)}
+						</div>
+						<Button
+							fullWidth
+							variant='contained'
+							type='submit'
+							disabled={!isValid}
+							sx={{
+								backgroundColor: '0147FF',
+								height: '46px',
+								textTransform: 'capitalize',
+								fontSize: '18px',
+							}}
+						>
+							Отправить
+						</Button>
+					</form>
+					<div className={styles['form-footer']}>
+						<p>или</p>
+						<Link className={styles.link} href={ROUTES.LOGIN}>
+							Вход
+						</Link>
 					</div>
-					<div>
-						<label>Mail</label>
-						<input placeholder='Email' {...register('email')} />
-						{errors.email && <p>{errors.email.message}</p>}
-					</div>
-					<div>
-						<label>Пароль</label>
-						<input placeholder='Пароль' {...register('password')} />
-						{errors.password && <p>{errors.password.message}</p>}
-					</div>
-					<div>
-						<label>Подтвердите пароль</label>
-						<input
-							placeholder='Повторите пароль'
-							{...register('confirmPassword')}
-						/>
-						{errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-					</div>
-					<Button variant='contained' type='submit' disabled={!isValid}>
-						Отправить
-					</Button>
-				</form>
-				<div>
-					<p>или</p>
-					<Link href={ROUTES.LOGIN}>Вход</Link>
 				</div>
+				<Image
+					src={authImg}
+					alt='Register Background Image'
+					width={560}
+					height={720}
+					className={styles['bg-img']}
+					priority
+				/>
 			</div>
-			<Image
-				src={authImg}
-				alt='Register Background Image'
-				width={560}
-				height={720}
-				className={styles['bg-img']}
-			/>
 		</div>
 	)
 }

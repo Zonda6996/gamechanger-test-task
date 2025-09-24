@@ -20,10 +20,23 @@ export async function POST(req: Request) {
 
 		const hashed = await bcrypt.hash(password, 10)
 
-		const stmt = db.prepare(
-			'INSERT INTO users (login, email, password) VALUES (?, ?, ?)'
-		)
-		stmt.run(login, email, hashed)
+		try {
+			const stmt = db.prepare(
+				'INSERT INTO users (login, email, password) VALUES (?, ?, ?)'
+			)
+			stmt.run(login, email, hashed)
+		} catch (err) {
+			if (
+				err instanceof Error &&
+				err.message.includes('UNIQUE constraint failed')
+			) {
+				return NextResponse.json(
+					{ error: 'Это электронное письмо уже занято!' },
+					{ status: 400 }
+				)
+			}
+			throw err
+		}
 
 		await createBitrixContact(login, email)
 

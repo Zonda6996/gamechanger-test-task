@@ -13,7 +13,7 @@ export const registerSchema = z
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		path: ['confirmPassword'],
-		message: 'Пароли не совпадают',
+		message: 'Пароли должны совпадать!',
 	})
 
 export const loginSchema = z.object({
